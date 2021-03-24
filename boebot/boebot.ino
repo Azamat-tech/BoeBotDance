@@ -2,7 +2,7 @@
 #include "../include/parser.h"
 
 void setup() {
-   
+  trim_coordinates();
 
 }
 
