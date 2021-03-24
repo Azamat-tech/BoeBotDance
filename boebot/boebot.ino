@@ -1,5 +1,6 @@
-#include "../include/constants.h"
-#include "../include/parser.h"
+#include "../include/constants.hpp"
+#include "../include/parser.hpp"
+#include "../include/boebotrobot.hpp"
 
 void setup() {
   trim_coordinates();
@@ -7,6 +8,7 @@ void setup() {
 }
 
 void loop() {
+  Robot boebot;
   
 
 }
