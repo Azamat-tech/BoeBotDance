@@ -1,6 +1,9 @@
 #ifndef ROBOT_CONSTANTS
 #define ROBOT_CONSTANTS
 
+#include "Arduino.h"
+#include <Servo.h>
+
 // Pins of the Wheel
 constexpr int left_wheel = 12;
 constexpr int right_wheel = 13;
