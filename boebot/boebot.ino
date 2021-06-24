@@ -24,22 +24,22 @@ unsigned long ak = millis();
 int val = 0;
 
 String danceCoordinates =
-" A1W\
-a1 t38\
-3b t100\
-2c t195\
+" A1N\
+a1 t0\
+3b t0\
+2c t0\
 e1 t0\
-5e t367\
+5e t0\
 4d t0\
 5e t0\
 4d t0\
 5e t0\
 c4 t0\
-5a t760\
-a3 t838\
-b4 t916\
-a2 t960\
-b3 t1074\
+5a t0\
+a3 t0\
+b4 t0\
+a2 t0\
+b3 t0\
 a2 t0\
 1e t0\
 a1 t0";
@@ -299,6 +299,8 @@ class Robot {
         }
       }
 
+      // once the button was pressed the robot should return to the initial position
+      // and orientation. This function makes sure that orientation is the same
       void FinalOrientationAlignment(bool sensors[5], bool prevSensors[5]) {
         if(currentPosition.direction == nextPosition.direction){
           _InitializeTheRobot();
@@ -335,6 +337,8 @@ class Robot {
         }
       }
 
+      // the function that lets the robot to move to the next position
+      // here checks if first goes horizontally or vertically
       void GetToTheNextPosition(bool sensors[5], bool prevSensors[5]) {
         rotationAligned = false;
         if(nextPosition.horizontalFirst) {
@@ -388,6 +392,8 @@ class Robot {
         }
       }
 
+      // turning based on the current robots direction and the desired goal
+      // considers cases when the robot at the edge
       void TurnBasedOnDirection(char goalDirection, bool sensors[5], bool prevSensors[5]) {
         DIR robotDirection = currentPosition.direction;
 
@@ -505,6 +511,8 @@ String GetTheNextDestination() {
   return toReturn;
 }
 
+// returns the next string of the time without the letter 't'
+// e.g "t150" -> "150"
 String GetTheNextDestinationDelay() {
   String toReturn = "";
   while(true) {
@@ -522,6 +530,7 @@ String GetTheNextDestinationDelay() {
   return toReturn;
 }
 
+
 void GetInputFromSerialChannel() {
   if (Serial.available()) {
     String input = Serial.readString();
@@ -531,6 +540,7 @@ void GetInputFromSerialChannel() {
   }
 }
 
+// Update the dance from the serial Input
 void UpdateTheDanceCoordinate() {
   danceCoordinates = TrimCoordinates(serialDanceCoordinates);
   danceCoordinates.toLowerCase();
