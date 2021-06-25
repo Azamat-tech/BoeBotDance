@@ -1,5 +1,5 @@
 #include "constants.hpp"
-
+// FINAL CODE
 using namespace std;
 
 #define l digitalWrite(11, 0);
@@ -19,27 +19,27 @@ unsigned long waitingTime = millis();
 unsigned long finalRotationTime;
 unsigned long finalRotationStartedFrom;
 
-int moveIndex;
+int moveIndex = 3;
 unsigned long ak = millis();
 int val = 0;
 
 String danceCoordinates =
-" A1N\
-a1 t0\
-3b t0\
-2c t0\
+" A1W\
+a1 t38\
+3b t100\
+2c t195\
 e1 t0\
-5e t0\
+5e t367\
 4d t0\
 5e t0\
 4d t0\
 5e t0\
 c4 t0\
-5a t0\
-a3 t0\
-b4 t0\
-a2 t0\
-b3 t0\
+5a t760\
+a3 t838\
+b4 t916\
+a2 t960\
+b3 t1074\
 a2 t0\
 1e t0\
 a1 t0";
@@ -299,8 +299,6 @@ class Robot {
         }
       }
 
-      // once the button was pressed the robot should return to the initial position
-      // and orientation. This function makes sure that orientation is the same
       void FinalOrientationAlignment(bool sensors[5], bool prevSensors[5]) {
         if(currentPosition.direction == nextPosition.direction){
           _InitializeTheRobot();
@@ -337,8 +335,6 @@ class Robot {
         }
       }
 
-      // the function that lets the robot to move to the next position
-      // here checks if first goes horizontally or vertically
       void GetToTheNextPosition(bool sensors[5], bool prevSensors[5]) {
         rotationAligned = false;
         if(nextPosition.horizontalFirst) {
@@ -392,8 +388,6 @@ class Robot {
         }
       }
 
-      // turning based on the current robots direction and the desired goal
-      // considers cases when the robot at the edge
       void TurnBasedOnDirection(char goalDirection, bool sensors[5], bool prevSensors[5]) {
         DIR robotDirection = currentPosition.direction;
 
@@ -511,8 +505,6 @@ String GetTheNextDestination() {
   return toReturn;
 }
 
-// returns the next string of the time without the letter 't'
-// e.g "t150" -> "150"
 String GetTheNextDestinationDelay() {
   String toReturn = "";
   while(true) {
@@ -530,7 +522,6 @@ String GetTheNextDestinationDelay() {
   return toReturn;
 }
 
-
 void GetInputFromSerialChannel() {
   if (Serial.available()) {
     String input = Serial.readString();
@@ -540,11 +531,11 @@ void GetInputFromSerialChannel() {
   }
 }
 
-// Update the dance from the serial Input
 void UpdateTheDanceCoordinate() {
   danceCoordinates = TrimCoordinates(serialDanceCoordinates);
   danceCoordinates.toLowerCase();
   startingPosition = danceCoordinates.substring(0, 3);
+  boebot.InitializeTheRobot(startingPosition, positionTimeDelay);  // initializes the robot at the start position
 }
 
 void InitializeStringHelpers() {
@@ -554,7 +545,6 @@ void InitializeStringHelpers() {
 
 void updateval(){
   if (millis() >= ak + 200){
-    Serial.println(String(moveIndex) + " " + String(danceCoordinates.length()));
     val = (val + 1) % 2;
     ak = millis();
   }
@@ -591,6 +581,7 @@ void loop() {
         if (boebot.numberOfButtonPresses == 1) {
           nextPositionFromString = GetTheNextDestination();
           positionTimeDelay = GetTheNextDestinationDelay().toInt();
+          Serial.println(nextPositionFromString);
           boebot.nextPosition.SetPositions(nextPositionFromString[0], nextPositionFromString[1]);
         }else {
             boebot.nextPosition.SetPositions(startingPosition[0], startingPosition[1]);
